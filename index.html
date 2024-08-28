@@ -99,22 +99,23 @@
 
     <nav>
         <a href="#inicio">Inicio</a>
-        <a href="#categorias">Categorías</a>
+        <a href="#juegos">Juegos</a>
         <a href="#subir-juego">Subir Juego</a>
         <a href="#contacto">Contacto</a>
     </nav>
 
-    <!-- Sección de Inicio con Juego Básico -->
+    <!-- Sección de Inicio -->
     <section id="inicio">
         <h2>Inicio</h2>
-        <canvas id="gameCanvas" width="480" height="320" style="background-color: #f0f0f0;"></canvas>
+        <p>Bienvenido a nuestra página de juegos.</p>
     </section>
 
-    <!-- Sección de Categorías -->
-    <section id="categorias">
-        <h2>Categorías</h2>
-        <p>Aquí puedes explorar juegos por categoría.</p>
-        <!-- Aquí podrías añadir una lista de categorías y más tarjetas de juegos. -->
+    <!-- Sección de Juegos -->
+    <section id="juegos">
+        <h2>Juegos</h2>
+        <div class="container" id="gameContainer">
+            <!-- Los juegos subidos se mostrarán aquí -->
+        </div>
     </section>
 
     <!-- Sección de Subir Juego -->
@@ -128,8 +129,8 @@
             <label for="gameDescription">Descripción:</label>
             <textarea id="gameDescription" name="gameDescription" rows="3" required></textarea>
 
-            <label for="gameFile">Archivo del Juego:</label>
-            <input type="file" id="gameFile" name="gameFile" required>
+            <label for="gameFile">Archivo del Juego (URL del juego):</label>
+            <input type="text" id="gameFile" name="gameFile" placeholder="https://example.com/juego" required>
 
             <button type="submit">Subir Juego</button>
         </form>
@@ -158,58 +159,29 @@
             });
         });
 
-        // Script para manejar la subida de juegos (simulado)
+        // Script para manejar la subida de juegos
         document.getElementById('uploadForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            alert('Juego subido exitosamente (simulado).');
+            const gameName = document.getElementById('gameName').value;
+            const gameDescription = document.getElementById('gameDescription').value;
+            const gameFile = document.getElementById('gameFile').value;
+
+            const gameContainer = document.getElementById('gameContainer');
+
+            const gameCard = document.createElement('div');
+            gameCard.className = 'game-card';
+
+            const gameContent = `
+                <h3>${gameName}</h3>
+                <p>${gameDescription}</p>
+                <iframe src="${gameFile}" width="300" height="200" frameborder="0"></iframe>
+            `;
+            gameCard.innerHTML = gameContent;
+            gameContainer.appendChild(gameCard);
+
+            // Limpiar el formulario
+            document.getElementById('uploadForm').reset();
         });
-
-        // Juego básico en HTML5 y JavaScript
-        const canvas = document.getElementById("gameCanvas");
-        const ctx = canvas.getContext("2d");
-
-        let character = {
-            x: 50,
-            y: canvas.height - 30,
-            width: 30,
-            height: 30,
-            color: "blue",
-            gravity: 1.5,
-            lift: -15,
-            velocity: 0
-        };
-
-        let isJumping = false;
-
-        document.addEventListener("keydown", function(event) {
-            if (event.code === "Space" && !isJumping) {
-                isJumping = true;
-                character.velocity = character.lift;
-            }
-        });
-
-        function drawCharacter() {
-            ctx.fillStyle = character.color;
-            ctx.fillRect(character.x, character.y, character.width, character.height);
-        }
-
-        function update() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            character.velocity += character.gravity;
-            character.y += character.velocity;
-
-            if (character.y + character.height > canvas.height) {
-                character.y = canvas.height - character.height;
-                character.velocity = 0;
-                isJumping = false;
-            }
-
-            drawCharacter();
-            requestAnimationFrame(update);
-        }
-
-        update();
     </script>
 
 </body>
