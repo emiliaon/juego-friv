@@ -54,16 +54,15 @@
             margin: 10px;
             padding: 15px;
             text-align: center;
-            width: 200px;
+            width: 300px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s;
         }
-        .game-card img {
-            max-width: 100%;
+        .game-card iframe {
+            width: 100%;
+            height: 200px;
+            border: 1px solid #ddd;
             border-radius: 8px;
-        }
-        .game-card:hover {
-            transform: scale(1.05);
         }
         .game-card h3 {
             margin: 10px 0;
@@ -129,7 +128,7 @@
             <label for="gameDescription">Descripción:</label>
             <textarea id="gameDescription" name="gameDescription" rows="3" required></textarea>
 
-            <label for="gameFile">Archivo del Juego (URL del juego):</label>
+            <label for="gameFile">URL del Juego (debe ser una URL de un juego en línea):</label>
             <input type="text" id="gameFile" name="gameFile" placeholder="https://example.com/juego" required>
 
             <button type="submit">Subir Juego</button>
@@ -174,7 +173,7 @@
             const gameContent = `
                 <h3>${gameName}</h3>
                 <p>${gameDescription}</p>
-                <iframe src="${gameFile}" width="300" height="200" frameborder="0"></iframe>
+                <iframe src="${gameFile}" frameborder="0"></iframe>
             `;
             gameCard.innerHTML = gameContent;
             gameContainer.appendChild(gameCard);
