@@ -70,6 +70,18 @@
             font-size: 1.2em;
             color: #333;
         }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 300px;
+            margin: 0 auto;
+        }
+        form input, form textarea, form button {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
         footer {
             background-color: #333;
             color: #fff;
@@ -92,27 +104,10 @@
         <a href="#contacto">Contacto</a>
     </nav>
 
-    <!-- Sección de Inicio -->
+    <!-- Sección de Inicio con Juego Básico -->
     <section id="inicio">
         <h2>Inicio</h2>
-        <div class="container">
-            <!-- Tarjetas de Juegos -->
-            <div class="game-card">
-                <img src="ruta_al_juego_1.jpg" alt="Juego 1">
-                <h3>Juego 1</h3>
-                <p>Descripción breve del juego.</p>
-            </div>
-            <div class="game-card">
-                <img src="ruta_al_juego_2.jpg" alt="Juego 2">
-                <h3>Juego 2</h3>
-                <p>Descripción breve del juego.</p>
-            </div>
-            <div class="game-card">
-                <img src="ruta_al_juego_3.jpg" alt="Juego 3">
-                <h3>Juego 3</h3>
-                <p>Descripción breve del juego.</p>
-            </div>
-        </div>
+        <canvas id="gameCanvas" width="480" height="320" style="background-color: #f0f0f0;"></canvas>
     </section>
 
     <!-- Sección de Categorías -->
@@ -126,7 +121,18 @@
     <section id="subir-juego">
         <h2>Subir un Juego</h2>
         <p>Formulario para que los desarrolladores suban sus juegos.</p>
-        <!-- Aquí podrías añadir un formulario simple para subir un juego. -->
+        <form id="uploadForm">
+            <label for="gameName">Nombre del Juego:</label>
+            <input type="text" id="gameName" name="gameName" required>
+
+            <label for="gameDescription">Descripción:</label>
+            <textarea id="gameDescription" name="gameDescription" rows="3" required></textarea>
+
+            <label for="gameFile">Archivo del Juego:</label>
+            <input type="file" id="gameFile" name="gameFile" required>
+
+            <button type="submit">Subir Juego</button>
+        </form>
     </section>
 
     <!-- Sección de Contacto -->
@@ -139,6 +145,72 @@
     <footer>
         <p>&copy; 2024 Mi Página de Juegos. Todos los derechos reservados.</p>
     </footer>
+
+    <script>
+        // Script para el efecto de scroll suave
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Script para manejar la subida de juegos (simulado)
+        document.getElementById('uploadForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Juego subido exitosamente (simulado).');
+        });
+
+        // Juego básico en HTML5 y JavaScript
+        const canvas = document.getElementById("gameCanvas");
+        const ctx = canvas.getContext("2d");
+
+        let character = {
+            x: 50,
+            y: canvas.height - 30,
+            width: 30,
+            height: 30,
+            color: "blue",
+            gravity: 1.5,
+            lift: -15,
+            velocity: 0
+        };
+
+        let isJumping = false;
+
+        document.addEventListener("keydown", function(event) {
+            if (event.code === "Space" && !isJumping) {
+                isJumping = true;
+                character.velocity = character.lift;
+            }
+        });
+
+        function drawCharacter() {
+            ctx.fillStyle = character.color;
+            ctx.fillRect(character.x, character.y, character.width, character.height);
+        }
+
+        function update() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            character.velocity += character.gravity;
+            character.y += character.velocity;
+
+            if (character.y + character.height > canvas.height) {
+                character.y = canvas.height - character.height;
+                character.velocity = 0;
+                isJumping = false;
+            }
+
+            drawCharacter();
+            requestAnimationFrame(update);
+        }
+
+        update();
+    </script>
 
 </body>
 </html>
